@@ -31,7 +31,7 @@ const MESSAGE = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const PHOTO_COUNT = 25;
+const PHOTO_COUNT = 5;
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -42,21 +42,35 @@ const getRandomInteger = (a, b) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const createPhoto = {
-  id: getRandomInteger(1,25),
-  url: `photo/${[getRandomInteger(1,25)]}.jpg`,
-  description: getRandomArrayElement(DESCR),
-  likes: `${[getRandomInteger(15, 200)]}`,
-  comments: {
-    id: `${[getRandomInteger(1, 135)]}`,
-    avatar: `img/avatar-${[getRandomInteger(1,6)]}.svg`,
+const makeComments = () => {
+  return {
+    id: `${getRandomInteger(1, 135)}`,
+    avatar: `img/avatar-${getRandomInteger(1,6)}.svg`,
     message: getRandomArrayElement(MESSAGE),
     name: getRandomArrayElement(AVTOR),
-  },
+  };
 };
 
-// console.log(createPhoto);
+const createPhoto = () => ({
+  id: getRandomInteger(1,25),
+  url: `photos/${[getRandomInteger(1,25)]}.jpg`,
+  description: getRandomArrayElement(DESCR),
+  likes: `${[getRandomInteger(15, 200)]}`,
+  comments: Array.from({length:getRandomInteger(1, 2)}, makeComments),
+});
 
 const arrPhoto = Array.from({length: PHOTO_COUNT}, createPhoto);
 
-arrPhoto();
+// const getRandomNumbersInRange = (min, max, count) => {
+//   let result = [];
+
+//   while (result.length < count) {
+//       if (result.indexOf(getRandomInteger(min, max)) === -1) {
+//           result.push(getRandomInteger(min,max));
+//       }
+//   }
+
+//   return result;
+// };
+
+// console.log(arrPhoto);
