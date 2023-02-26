@@ -31,7 +31,7 @@ const MESSAGE = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const PHOTO_COUNT = 5;
+const PHOTO_COUNT = 25;
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -42,35 +42,40 @@ const getRandomInteger = (a, b) => {
 
 const getRandomArrayElement = (elements) => elements[getRandomInteger(0, elements.length - 1)];
 
-const makeComments = () => {
-  return {
-    id: `${getRandomInteger(1, 135)}`,
-    avatar: `img/avatar-${getRandomInteger(1,6)}.svg`,
-    message: getRandomArrayElement(MESSAGE),
-    name: getRandomArrayElement(AVTOR),
+const getRandomNumbersInRange = (min, max) => {
+  const previousValues = [];
+
+  return () => {
+    let currentValue = getRandomInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
   };
 };
 
-const createPhoto = () => ({
-  id: getRandomInteger(1,25),
-  url: `photos/${[getRandomInteger(1,25)]}.jpg`,
-  description: getRandomArrayElement(DESCR),
-  likes: `${[getRandomInteger(15, 200)]}`,
-  comments: Array.from({length:getRandomInteger(1, 2)}, makeComments),
+const generatePhotoId = getRandomNumbersInRange(1, 25);
+const generatePhotoUrl = getRandomNumbersInRange(1, 25);
+const generateCommentId = getRandomNumbersInRange(1, 135);
+
+const makeComments = () => ({
+  id: generateCommentId(),
+  avatar: `img/avatar-${getRandomNumbersInRange(1,6)}.svg`,
+  message: getRandomArrayElement(MESSAGE),
+  name: getRandomArrayElement(AVTOR),
 });
 
-const arrPhoto = Array.from({length: PHOTO_COUNT}, createPhoto);
+const createPost = () => ({
+  id: generatePhotoId(),
+  url: `photos/${generatePhotoUrl()}.jpg`,
+  description: getRandomArrayElement(DESCR),
+  likes: `${[getRandomInteger(15, 200)]}`,
+  comments: Array.from({length:getRandomInteger(1,2)}, makeComments),
+});
 
-// const getRandomNumbersInRange = (min, max, count) => {
-//   let result = [];
-
-//   while (result.length < count) {
-//       if (result.indexOf(getRandomInteger(min, max)) === -1) {
-//           result.push(getRandomInteger(min,max));
-//       }
-//   }
-
-//   return result;
-// };
-
-// console.log(arrPhoto);
+const arrPost = Array.from({length: PHOTO_COUNT}, createPost);
+arrPost();
