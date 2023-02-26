@@ -77,5 +77,5 @@ const createPost = () => ({
   comments: Array.from({length:getRandomInteger(1,2)}, makeComments),
 });
 
-const arrPost = Array.from({length: PHOTO_COUNT}, createPost);
+const arrPost = () => Array.from({length: PHOTO_COUNT}, createPost);
 arrPost();
