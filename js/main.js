@@ -9,7 +9,7 @@ const DESCR = [
   'Вашингтон',
 ];
 
-const AVTOR = [
+const AUTHOR = [
   'Markus',
   'Anton',
   'Igor',
@@ -32,6 +32,26 @@ const MESSAGE = [
 ];
 
 const PHOTO_COUNT = 25;
+
+const Likes = {
+  MIN: 15,
+  MAX: 135
+};
+
+const Comments = {
+  MIN: 1,
+  MAX: 2
+};
+
+const Id = {
+  MIN: 1,
+  MAX: 25
+};
+
+const Pic = {
+  MIN: 1,
+  MAX: 6
+};
 
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -58,24 +78,24 @@ const getRandomNumbersInRange = (min, max) => {
   };
 };
 
-const generatePhotoId = getRandomNumbersInRange(1, 25);
-const generatePhotoUrl = getRandomNumbersInRange(1, 25);
-const generateCommentId = getRandomNumbersInRange(1, 135);
+const generatePhotoId = getRandomNumbersInRange(Id.MIN, Id.MAX);
+const generatePhotoUrl = getRandomNumbersInRange(Id.MIN, Id.MAX);
+const generateCommentId = getRandomNumbersInRange(Comments.MIN, Comments.MAX);
 
-const makeComments = () => ({
+const createComments = () => ({
   id: generateCommentId(),
-  avatar: `img/avatar-${getRandomNumbersInRange(1,6)}.svg`,
+  avatar: `img/avatar-${getRandomNumbersInRange(Pic.MIN, Pic.MAX)}.svg`,
   message: getRandomArrayElement(MESSAGE),
-  name: getRandomArrayElement(AVTOR),
+  name: getRandomArrayElement(AUTHOR),
 });
 
 const createPost = () => ({
   id: generatePhotoId(),
   url: `photos/${generatePhotoUrl()}.jpg`,
   description: getRandomArrayElement(DESCR),
-  likes: `${[getRandomInteger(15, 200)]}`,
-  comments: Array.from({length:getRandomInteger(1,2)}, makeComments),
+  likes: `${getRandomInteger(Likes.MIN, Likes.MAX)}`,
+  comments: Array.from({length:getRandomInteger(1,2)}, createComments),
 });
 
-const arrPost = () => Array.from({length: PHOTO_COUNT}, createPost);
-arrPost();
+const createPosts = () => Array.from({length: PHOTO_COUNT}, createPost);
+console.log(createPosts());
