@@ -1,6 +1,7 @@
 import './data.js';
 import './util.js';
-import {create} from './create.js';
+import {createPosts} from './create.js';
 import {renderPictures} from './picture.js';
 
-renderPictures(create);
+const pictures = createPosts();
+renderPictures(pictures);
