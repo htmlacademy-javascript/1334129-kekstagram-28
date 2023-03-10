@@ -2,6 +2,7 @@ import {DESCR, AUTHOR, MESSAGE, PHOTO_COUNT, Likes, Comments, Id, Pic} from './d
 import {getRandomInteger, getRandomArrayElement, getRandomNumbersInRange} from './util.js';
 
 const generatePhotoId = getRandomNumbersInRange(Id.MIN, Id.MAX);
+const generatePhotoUrl = getRandomNumbersInRange(Id.MIN, Id.MAX);
 const generateCommentId = getRandomNumbersInRange(Comments.MIN, Comments.MAX);
 const generateAvatar = getRandomNumbersInRange(Pic.MIN, Pic.MAX);
 
@@ -14,7 +15,7 @@ const createComments = () => ({
 
 const createPost = () => ({
   id: generatePhotoId(),
-  url: `photos/${generatePhotoId()}.jpg`,
+  url: `photos/${generatePhotoUrl()}.jpg`,
   description: getRandomArrayElement(DESCR),
   likes: `${getRandomInteger(Likes.MIN, Likes.MAX)}`,
   comments: Array.from({length:getRandomInteger(1,2)}, createComments),
