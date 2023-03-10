@@ -1,13 +1,11 @@
-import {createPosts} from './create.js';
+const picturesContainer = document.querySelector('.pictures');
+const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const renderPictures = () => {
-  const picturesContainer = document.querySelector('.pictures');
-  const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const renderPictures = (par) => {
 
-  const pictures = createPosts();
   const pictureFragment = document.createDocumentFragment();
 
-  pictures.forEach(({url, likes, comments}) => {
+  const createPictureElement = ({url, likes, comments}) => {
 
     const pictureElement = pictureTemplate.cloneNode(true);
 
@@ -17,7 +15,9 @@ const renderPictures = () => {
 
     pictureFragment.appendChild(pictureElement);
 
-  });
+  };
+
+  par.forEach(createPictureElement);
 
   picturesContainer.appendChild(pictureFragment);
 };
