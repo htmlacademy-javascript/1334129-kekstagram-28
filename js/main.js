@@ -7,3 +7,5 @@ import {renderPictures} from './render-picture.js';
 
 const pictures = createPosts();
 renderPictures(pictures);
+
+export {pictures};

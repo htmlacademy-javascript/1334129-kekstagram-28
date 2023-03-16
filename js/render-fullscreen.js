@@ -1,8 +1,8 @@
-import {createPosts} from './create.js';
+// import {createPosts} from './create.js';
 import {viewElement, hideElement, isMouseLeftButtonEvent, isEscapeEvent} from './util.js';
+import {pictures} from './main.js';
 
-
-const posts = createPosts();
+// const posts = createPosts();
 
 const body = document.querySelector('body');
 const picContainer = body.querySelector('.pictures');
@@ -45,15 +45,15 @@ const createCommentsElement = ({img, name, comments}) => { //список ком
   return commentElement;
 };
 
-// const renderComments = (item) => {
-//   commentsContainer.innerHTML = '';
-//   commentsContainer.append(...item.map(createCommentElement));
-// };
+const renderComments = (item) => {
+  comentsList.innerHTML = '';
+  comentsList.append(...item.map(createCommentsElement));
+};
 
 const openPopup = (evt) => {
   evt.preventDefault();
-
-  if (evt.target.closest('.picture')) {
+  const target = evt.target.closest('.picture');
+  if (target) {
     body.classList.add('modal-open');
 
     viewElement(bigPicture);
@@ -61,7 +61,7 @@ const openPopup = (evt) => {
     hideElement(commentsLoader);
 
 
-    // const target = evt.target.closest('.picture');
+
     // const params = posts.find((item) => item.id === Number(target.dataset.id));
     // bigPictureImg.src = evt.target.src;
     // bigPictureLikes.textContent = params.likes;
@@ -69,8 +69,15 @@ const openPopup = (evt) => {
     // bigPictureCaption.textContent = params.description;
 
     // clearContainer(comentsList);
-    // comentsList.append(createCommentsElement);
-    document.addEventListener('keydown', onCloseButtonDown);
+    const currentDescription = pictures.find((item) => item.id === Number(target.dataset.id));
+
+    bigPictureImg.src = evt.target.src;
+    bigPictureLikes.textContent = currentDescription.likes;
+    bigPictureComments.textContent = currentDescription.comments.length;
+    bigPictureCaption.textContent = currentDescription.description;
+
+    renderComments(currentDescription.comments);
+    // document.addEventListener('keydown', onCloseButtonDown);
   }
 };
 
@@ -86,4 +93,6 @@ const closePopup = () => {
 
 picContainer.addEventListener('click', openPopup);
 popupCloseBtn.addEventListener('click', onCloseButtonClick);
+document.addEventListener('keydown', onCloseButtonDown);
+
 
