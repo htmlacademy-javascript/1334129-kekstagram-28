@@ -23,4 +23,4 @@ const createPost = () => ({
 
 const createPosts = () => Array.from({length: PHOTO_COUNT}, createPost);
 
-export {createPosts};
+export {createPosts, createComments};
