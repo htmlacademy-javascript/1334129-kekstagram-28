@@ -40,7 +40,7 @@ const Likes = {
 
 const Comments = {
   MIN: 1,
-  MAX: 2
+  MAX: 25
 };
 
 const Id = {

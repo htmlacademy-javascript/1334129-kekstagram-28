@@ -23,4 +23,4 @@ const createPicture = () => ({
 
 const getPicture = () => Array.from({length: PHOTO_COUNT}, createPicture);
 
-export {getPicture};
+export {getPicture, createComments};
