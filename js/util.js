@@ -12,14 +12,6 @@ const isMouseLeftButtonEvent = (evt) => evt.button === MOUSE_LEFT_BUTTON;
 
 const isEscapeEvent = (evt) => evt.code === Keys.ESC;
 
-const hideElement = (element) => {
-  element.classList.add(`hidden`);
-};
-
-const viewElement = (element) => {
-  element.classList.remove('hidden');
-};
-
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -45,19 +37,12 @@ const getRandomNumbersInRange = (min, max) => {
   };
 };
 
-// const clearContainer = (container) => {
-//   container.forEach((element) => element.remove());
-// };
 
 export {
-  viewElement,
-  hideElement,
   isEnterEvent,
   isMouseLeftButtonEvent,
   isEscapeEvent,
   getRandomInteger,
   getRandomArrayElement,
   getRandomNumbersInRange,
-  // clearContainer
 };
-// export {viewElement, hideElement, getRandomInteger, getRandomArrayElement, getRandomNumbersInRange};

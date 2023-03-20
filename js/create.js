@@ -13,7 +13,7 @@ const createComments = () => ({
   name: getRandomArrayElement(AUTHOR),
 });
 
-const createPost = () => ({
+const createPicture = () => ({
   id: generatePhotoId(),
   url: `photos/${generatePhotoUrl()}.jpg`,
   description: getRandomArrayElement(DESCR),
@@ -21,6 +21,6 @@ const createPost = () => ({
   comments: Array.from({length:getRandomInteger(1,2)}, createComments),
 });
 
-const createPosts = () => Array.from({length: PHOTO_COUNT}, createPost);
+const getPicture = () => Array.from({length: PHOTO_COUNT}, createPicture);
 
-export {createPosts, createComments};
+export {getPicture};
