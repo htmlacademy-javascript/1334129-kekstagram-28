@@ -24,19 +24,16 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 const getRandomNumbersInRange = (min, max) => {
   const previousValues = [];
 
-  return () => {
-    let currentValue = getRandomInteger(min, max);
-    if (previousValues.length >= (max - min + 1)) {
-      return null;
-    }
-    while (previousValues.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    previousValues.push(currentValue);
-    return currentValue;
-  };
+  let currentValue = getRandomInteger(min, max);
+  if (previousValues.length >= (max - min + 1)) {
+    return null;
+  }
+  while (previousValues.includes(currentValue)) {
+    currentValue = getRandomInteger(min, max);
+  }
+  previousValues.push(currentValue);
+  return currentValue;
 };
-
 
 export {
   isEnterEvent,
