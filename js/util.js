@@ -35,6 +35,19 @@ const getRandomNumbersInRange = (min, max) => {
   return currentValue;
 };
 
+const numDecline = (number, words) => {
+  number = Math.abs(number) % 100;
+
+  if (number > 10 && number < 20) {
+    return words[2];
+  } else if (number % 10 > 1 && number % 10 < 5) {
+    return words[1];
+  } else if (number % 10 === 1) {
+    return words[0];
+  }
+  return words[2];
+};
+
 export {
   isEnterEvent,
   isMouseLeftButtonEvent,
@@ -42,4 +55,5 @@ export {
   getRandomInteger,
   getRandomArrayElement,
   getRandomNumbersInRange,
+  numDecline
 };
