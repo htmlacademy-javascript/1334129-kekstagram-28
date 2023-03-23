@@ -11,7 +11,6 @@ const social = bigPicture.querySelector('.social');
 const comentsList = social.querySelector('.social__comments');
 const socialComment = social.querySelector('.social__comment');
 const commentCountContainer = social.querySelector('.social__comment-count');
-const commentsLoader = bigPicture.querySelector('.comments-loader'); //Кнопка загрузить еще
 const commentsCount = bigPicture.querySelector('.social__comment-count .comments-count');//125
 const commentsView = commentCountContainer.querySelector('.comments-view');//5
 
@@ -55,7 +54,7 @@ const makeCommentsLoaderElement = () => {
 
   const newCommentsLoaderElement = commentsLoaderElement.cloneNode(true);
   newCommentsLoaderElement.classList.remove('hidden');
-  commentsLoader.replaceWith(newCommentsLoaderElement);
+  commentsLoaderElement.replaceWith(newCommentsLoaderElement);
 
   return newCommentsLoaderElement;
 };
@@ -83,7 +82,6 @@ const onPictureClick = (data) => {
   initCommentsLoader(data.comments);
   body.classList.add('modal-open');
   bigPicture.classList.remove('hidden');
-  // commentsLoader.classList.remove('hidden');
 };
 
 const hideBigPicture = () => {

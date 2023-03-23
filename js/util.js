@@ -35,6 +35,13 @@ const getRandomNumbersInRange = (min, max) => {
   return currentValue;
 };
 
+// const getRandomNumbersInRange = () => {
+//   let lastGeneratedId = 0;
+//   return () => {
+//     lastGeneratedId += 1;
+//     return lastGeneratedId;
+//   };
+// };
 const numDecline = (number, words) => {
   number = Math.abs(number) % 100;
 
