@@ -24,35 +24,17 @@ const getRandomArrayElement = (elements) => elements[getRandomInteger(0, element
 const getRandomNumbersInRange = (min, max) => {
   const previousValues = [];
 
-  let currentValue = getRandomInteger(min, max);
-  if (previousValues.length >= (max - min + 1)) {
-    return null;
-  }
-  while (previousValues.includes(currentValue)) {
-    currentValue = getRandomInteger(min, max);
-  }
-  previousValues.push(currentValue);
-  return currentValue;
-};
-
-// const getRandomNumbersInRange = () => {
-//   let lastGeneratedId = 0;
-//   return () => {
-//     lastGeneratedId += 1;
-//     return lastGeneratedId;
-//   };
-// };
-const numDecline = (number, words) => {
-  number = Math.abs(number) % 100;
-
-  if (number > 10 && number < 20) {
-    return words[2];
-  } else if (number % 10 > 1 && number % 10 < 5) {
-    return words[1];
-  } else if (number % 10 === 1) {
-    return words[0];
-  }
-  return words[2];
+  return () => {
+    let currentValue = getRandomInteger(min, max);
+    if (previousValues.length >= (max - min + 1)) {
+      return null;
+    }
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(min, max);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
 };
 
 export {
@@ -61,6 +43,5 @@ export {
   isEscapeEvent,
   getRandomInteger,
   getRandomArrayElement,
-  getRandomNumbersInRange,
-  numDecline
+  getRandomNumbersInRange
 };

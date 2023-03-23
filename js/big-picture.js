@@ -28,7 +28,7 @@ const renderModalComments = (comments) => {
   comentsList.append(...comments.map(createCommentElement));
 };
 
-const makeSequence = (step) => { //доп функция
+const makeSequence = (step) => {
   let index = 0;
   return () => {
     const prev = index;
