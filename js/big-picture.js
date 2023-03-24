@@ -43,7 +43,7 @@ const renderMoreComments = (commentsLoaderElement, stepSequence, comments) => {
   const [prev, index] = stepSequence();
 
   renderModalComments(comments.slice(prev, index));
-  commentsView.textContent = index;
+  commentsView.textContent = prev + comments.slice(prev,index).length;
   if (comments.length <= index) {
     commentsLoaderElement.classList.add('hidden');
   }
