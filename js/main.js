@@ -1,6 +1,7 @@
 import { getPicture } from './create.js';
-import { renderGallery } from './gallery.js';
+import { renderThumbnails } from './render-thumbnail.js';
 
 const pictures = getPicture();
+const container = document.querySelector('.pictures');
 
-renderGallery(pictures);
+renderThumbnails(pictures, container);

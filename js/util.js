@@ -37,12 +37,11 @@ const getRandomNumbersInRange = (min, max) => {
   };
 };
 
-
 export {
   isEnterEvent,
   isMouseLeftButtonEvent,
   isEscapeEvent,
   getRandomInteger,
   getRandomArrayElement,
-  getRandomNumbersInRange,
+  getRandomNumbersInRange
 };
