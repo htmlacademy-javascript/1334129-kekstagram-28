@@ -19,6 +19,33 @@ const pristine = new Pristine(formUpload, {
   errorTextParent: 'img-upload__field-wrapper',
 });
 
+const rules = [
+  {
+    check: (inputArray) => inputArray.some((item) => item.indexOf('#', 1) >= 1),
+    error: 'Хэш-теги должны разделяться пробелами',
+  },
+  {
+    check: (inputArray) => inputArray.some((item) => item[0] !== '#'),
+    error: 'Хэш-тег должен начинаться с символа #',
+  },
+  {
+    check: (inputArray) => inputArray.some((item, num, arr) => arr.includes(item, num + 1)),
+    error: 'Хэш-теги не должны повторяться',//проверка на уникальность тэгов
+  },
+  {
+    check: (inputArray) => inputArray.some((item) => item.length > MAX_SYMBOLS),//проверка на максимальное колличество символов
+    error: `Максимальная длина одного хэш-тэга ${MAX_SYMBOLS} символов, включая решётку;`,
+  },
+  {
+    check: (inputArray) => inputArray.length > MAX_HASHTAGS,
+    error: `Нельзя указывать больше ${MAX_HASHTAGS} хэш-тэгов`,
+  },
+  {
+    check: (inputArray) => inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),//проверка на допустимые символы
+    error: 'Хэш-тэг содержит недопустимые символы',
+  },
+];
+
 const inputHashtag = document.querySelector('.text__hashtags');
 
 let errorMessage = '';
@@ -41,32 +68,32 @@ const hashtagsHandler = (value) => {
     return true;
   }
 
-  const rules = [
-    {
-      check: inputArray.some((item) => item.indexOf('#', 1) >= 1),
-      error: 'Хэш-теги должны разделяться пробелами',
-    },
-    {
-      check: inputArray.some((item) => item[0] !== '#'),
-      error: 'Хэш-тег должен начинаться с символа #',
-    },
-    {
-      check: inputArray.some((item, num, arr) => arr.includes(item, num + 1)),
-      error: 'Хэш-теги не должны повторяться',//проверка на уникальность тэгов
-    },
-    {
-      check: inputArray.some((item) => item.length > MAX_SYMBOLS),//проверка на максимальное колличество символов
-      error: `Максимальная длина одного хэш-тэга ${MAX_SYMBOLS} символов, включая решётку;`,
-    },
-    {
-      check: inputArray.length > MAX_HASHTAGS,
-      error: `Нельзя указывать больше ${MAX_HASHTAGS} хэш-тэгов`,
-    },
-    {
-      check: inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),//проверка на допустимые символы
-      error: 'Хэш-тэг содержит недопустимые символы',
-    },
-  ];
+  // const rules = [
+  //   {
+  //     check: inputArray.some((item) => item.indexOf('#', 1) >= 1),
+  //     error: 'Хэш-теги должны разделяться пробелами',
+  //   },
+  //   {
+  //     check: inputArray.some((item) => item[0] !== '#'),
+  //     error: 'Хэш-тег должен начинаться с символа #',
+  //   },
+  //   {
+  //     check: inputArray.some((item, num, arr) => arr.includes(item, num + 1)),
+  //     error: 'Хэш-теги не должны повторяться',//проверка на уникальность тэгов
+  //   },
+  //   {
+  //     check: inputArray.some((item) => item.length > MAX_SYMBOLS),//проверка на максимальное колличество символов
+  //     error: `Максимальная длина одного хэш-тэга ${MAX_SYMBOLS} символов, включая решётку;`,
+  //   },
+  //   {
+  //     check: inputArray.length > MAX_HASHTAGS,
+  //     error: `Нельзя указывать больше ${MAX_HASHTAGS} хэш-тэгов`,
+  //   },
+  //   {
+  //     check: inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),//проверка на допустимые символы
+  //     error: 'Хэш-тэг содержит недопустимые символы',
+  //   },
+  // ];
 
   return rules.every((rule) => {
 
@@ -78,9 +105,8 @@ const hashtagsHandler = (value) => {
 
     return !isInvalid;
   });
-};
 
-pristine.addValidator(inputHashtag, hashtagsHandler, error, 2, false);
+};
 
 const onHashtagInput = () => {
 
@@ -95,8 +121,6 @@ const onHashtagInput = () => {
   }
 };
 
-inputHashtag.addEventListener('input', onHashtagInput);
-
 const onFormSubmit = (evt) => {
 
   evt.preventDefault();
@@ -104,7 +128,7 @@ const onFormSubmit = (evt) => {
   closeImageEditor();
 };
 
-const isTextFieldInFocus = () => document.activeElement === hashTags || document.activeElement === comment;//Если поле в фокусе не сработает эскейп
+const isTextFieldInFocus = () => document.activeElement === hashTags || document.activeElement === comment;
 
 const onDocumentKeydown = (evt) => {
 
@@ -136,4 +160,6 @@ const openImageEditor = () => {
   form.addEventListener('submit', onFormSubmit);
 };
 
+inputHashtag.addEventListener('input', onHashtagInput);
+pristine.addValidator(inputHashtag, hashtagsHandler, error, 2, false);
 uploadFile.addEventListener('change', openImageEditor);
