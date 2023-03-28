@@ -1,4 +1,6 @@
 import {isEscapeEvent} from './util.js';
+import {onIncreaseScaleClick, onDecreaseScaleClick, setDefaultScale} from './scale.js';
+import {onEffectChange} from './effects.js';
 
 const MAX_SYMBOLS = 20;
 const MAX_HASHTAGS = 5;
@@ -13,6 +15,10 @@ const comment = imageEditorDialog.querySelector('.text__description');
 
 const formUpload = document.querySelector('.img-upload__form');
 const submitButton = formUpload.querySelector('#upload-submit');
+
+const decreaseScaleElement = imageEditorDialog.querySelector('.scale__control--smaller');
+const increaseScaleElement = imageEditorDialog.querySelector('.scale__control--bigger');
+const effectsElement = imageEditorDialog.querySelector('.effects');
 
 const pristine = new Pristine(formUpload, {
   classTo: 'img-upload__field-wrapper',
@@ -50,7 +56,7 @@ const inputHashtag = document.querySelector('.text__hashtags');
 
 let errorMessage = '';
 
-const error = () => errorMessage;
+const getError = () => errorMessage;
 
 const hashtagsHandler = (value) => {
 
@@ -114,6 +120,10 @@ function closeImageEditor () {
   document.removeEventListener('keydown', onDocumentKeydown);
   form.removeEventListener('submit', onFormSubmit);
 
+  increaseScaleElement.removeEventListener('click', onIncreaseScaleClick);
+  decreaseScaleElement.removeEventListener('click', onDecreaseScaleClick);
+  effectsElement.removeEventListener('change', onEffectChange);
+
   form.reset();
 }
 
@@ -124,9 +134,14 @@ const openImageEditor = () => {
   closeButton.addEventListener('click', closeImageEditor);
   document.addEventListener('keydown', onDocumentKeydown);
 
+  setDefaultScale();
+  increaseScaleElement.addEventListener('click', onIncreaseScaleClick);
+  decreaseScaleElement.addEventListener('click', onDecreaseScaleClick);
+  effectsElement.addEventListener('change', onEffectChange);
+
   form.addEventListener('submit', onFormSubmit);
 };
 
 inputHashtag.addEventListener('input', onHashtagInput);
-pristine.addValidator(inputHashtag, hashtagsHandler, error, 2, false);
+pristine.addValidator(inputHashtag, hashtagsHandler, getError, 2, false);
 uploadFile.addEventListener('change', openImageEditor);
