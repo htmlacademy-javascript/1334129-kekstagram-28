@@ -84,7 +84,7 @@ const OnSliderUpdate = () => {
   effectValueElement.value = sliderValue;
 };
 
-const hideSlider = () =>  sliderContainerElement.classList.add('hidden');
+const hideSlider = () => sliderContainerElement.classList.add('hidden');
 
 const onEffectChange = (evt) => {
 
