@@ -85,6 +85,7 @@ const OnSliderUpdate = () => {
 };
 
 const hideSlider = () => sliderContainerElement.classList.add('hidden');
+const showSlider = () => sliderContainerElement.classList.remove('hidden');
 
 const onEffectChange = (evt) => {
 
@@ -96,19 +97,12 @@ const onEffectChange = (evt) => {
   choosenOption = EFFECTS_OPTIONS[targetValue];
   imagePreviewElement.className = `effects__preview--${targetValue}`;
 
-  if (choosenOption === EFFECTS_OPTIONS.none) {
-
-    hideSlider();
-  } else {
-
-    sliderContainerElement.classList.remove('hidden');
-  }
+  (choosenOption === EFFECTS_OPTIONS.none ? hideSlider : showSlider)();
 
   sliderElement.noUiSlider.updateOptions(choosenOption);
 };
 
 noUiSlider.create(sliderElement, choosenOption);
 sliderElement.noUiSlider.on('update', OnSliderUpdate);
-hideSlider();
 
 export {onEffectChange};
