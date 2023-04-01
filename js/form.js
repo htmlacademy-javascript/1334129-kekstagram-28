@@ -1,7 +1,9 @@
 import {isEscapeEvent} from './util.js';
 import {onIncreaseScaleClick, onDecreaseScaleClick, setDefaultScale} from './scale.js';
-import {onEffectChange} from './effects.js';
+import {onEffectChange, setDefaultEffect} from './effects.js';
+import {sendRequest} from './requests.js';
 
+const SEND_DATA_URL = 'https://28.javascript.pages.academy/kekstagram';
 const MAX_SYMBOLS = 20;
 const MAX_HASHTAGS = 5;
 
@@ -19,6 +21,10 @@ const submitButton = formUpload.querySelector('#upload-submit');
 const decreaseScaleElement = imageEditorDialog.querySelector('.scale__control--smaller');
 const increaseScaleElement = imageEditorDialog.querySelector('.scale__control--bigger');
 const effectsElement = imageEditorDialog.querySelector('.effects');
+
+let connectionErrorShown = false;
+let sendDataSucessShown = false;
+let formData = undefined;
 
 const pristine = new Pristine(formUpload, {
   classTo: 'img-upload__field-wrapper',
@@ -95,21 +101,130 @@ const onHashtagInput = () => {
 };
 
 const onFormSubmit = (evt) => {
-
   evt.preventDefault();
-
-  closeImageEditor();
+  submitButton.disabled = true;
+  formData = new FormData(evt.target);
+  saveNewPost();
 };
 
 const isTextFieldInFocus = () => document.activeElement === hashTags || document.activeElement === comment;
 
+const onMouseClick = (evt) => {
+
+  if (connectionErrorShown) {
+
+    const errorElemenet = document.querySelector('.error__inner');
+
+    if (!evt.composedPath().includes(errorElemenet)) {
+
+      closeErrorBlock();
+    }
+  } else if (sendDataSucessShown) {
+
+    const successElemenet = document.querySelector('.success__inner');
+
+    if (!evt.composedPath().includes(successElemenet)) {
+
+      closeSuccessBlock();
+      closeImageEditor();
+    }
+  }
+};
+
+
 const onDocumentKeydown = (evt) => {
 
-  if (isEscapeEvent(evt) && !isTextFieldInFocus()) {
+  if (!isEscapeEvent(evt)) {
+    return;
+  }
+
+  if (connectionErrorShown) {
+
+    closeErrorBlock();
+  } else if (sendDataSucessShown) {
+
+    closeSuccessBlock();
+    closeImageEditor();
+  } else if (!isTextFieldInFocus()) {
 
     closeImageEditor();
   }
 };
+
+function closeErrorBlock() {
+  const errorElemenet = document.querySelector('.error');
+  pageBody.removeChild(errorElemenet);
+  document.removeEventListener('click', onMouseClick);
+  connectionErrorShown = false;
+}
+
+function closeSuccessBlock() {
+  const successElemenet = document.querySelector('.success');
+  pageBody.removeChild(successElemenet);
+  document.removeEventListener('click', onMouseClick);
+  sendDataSucessShown = false;
+}
+
+const changeTryAgainButtonAccessibility = (newValue) => {
+  const tryAgainButton = document.querySelector('.error__button');
+  tryAgainButton.disabled = newValue;
+};
+
+const onTryAgainButtonClick = () => {
+
+  changeTryAgainButtonAccessibility(true);
+  saveNewPost();
+};
+
+const onOkButtonClick = () => {
+  closeSuccessBlock();
+  closeImageEditor();
+};
+
+const showConnectionError = () => {
+
+  if (connectionErrorShown) {
+    changeTryAgainButtonAccessibility(false);
+    return;
+  }
+  connectionErrorShown = true;
+
+  submitButton.disabled = false;
+
+  const errorTemplate = document.querySelector('#error')
+    .content
+    .querySelector('.error');
+
+  const errorElement = errorTemplate.cloneNode(true);
+  pageBody.appendChild(errorElement);
+
+  const tryAgainButton = errorElement.querySelector('.error__button');
+  tryAgainButton.addEventListener('click', onTryAgainButtonClick);
+  document.addEventListener('click', onMouseClick);
+};
+
+const showSuccessMessage = () => {
+  sendDataSucessShown = true;
+
+  const sucсessTemplate = document.querySelector('#success')
+    .content
+    .querySelector('.success');
+
+  const sucсessElement = sucсessTemplate.cloneNode(true);
+  pageBody.appendChild(sucсessElement);
+
+  const okButton = sucсessElement.querySelector('.success__button');
+  okButton.addEventListener('click', onOkButtonClick);
+  document.addEventListener('click', onMouseClick);
+};
+
+function saveNewPost() {
+  const options = {
+    method: 'POST',
+    body: formData,
+  };
+  sendRequest(SEND_DATA_URL, showSuccessMessage, showConnectionError, options);
+}
 
 function closeImageEditor () {
 
@@ -124,6 +239,10 @@ function closeImageEditor () {
   decreaseScaleElement.removeEventListener('click', onDecreaseScaleClick);
   effectsElement.removeEventListener('change', onEffectChange);
 
+  setDefaultScale();
+  setDefaultEffect();
+  submitButton.disabled = false;
+
   form.reset();
 }
 
@@ -135,6 +254,7 @@ const openImageEditor = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 
   setDefaultScale();
+  // setDefaultEffect();
   increaseScaleElement.addEventListener('click', onIncreaseScaleClick);
   decreaseScaleElement.addEventListener('click', onDecreaseScaleClick);
   effectsElement.addEventListener('change', onEffectChange);
