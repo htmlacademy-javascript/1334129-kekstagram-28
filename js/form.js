@@ -215,6 +215,7 @@ function saveNewPost() {
     body: formData,
   };
   sendRequest(SEND_DATA_URL, showSuccessMessage, showConnectionError, options);
+  closeImageEditor();
 }
 
 function closeImageEditor () {
