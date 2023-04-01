@@ -65,9 +65,7 @@ let errorMessage = '';
 const getError = () => errorMessage;
 
 const hashtagsHandler = (value) => {
-
   errorMessage = '';
-
   const inputArray = value.toLowerCase().trim().split(/\s+/);
 
   if (inputArray.length === 0) {
@@ -75,7 +73,6 @@ const hashtagsHandler = (value) => {
   }
 
   return rules.every((rule) => {
-
     const isInvalid = rule.check(inputArray);
 
     if (isInvalid) {
@@ -88,7 +85,6 @@ const hashtagsHandler = (value) => {
 };
 
 const onHashtagInput = () => {
-
   if (pristine.validate()) {
 
     submitButton.classList.remove('img-upload__submit--disabled');
@@ -110,17 +106,14 @@ const onFormSubmit = (evt) => {
 const isTextFieldInFocus = () => document.activeElement === hashTags || document.activeElement === comment;
 
 const onMouseClick = (evt) => {
-
   if (connectionErrorShown) {
 
     const errorElemenet = document.querySelector('.error__inner');
-
     if (!evt.composedPath().includes(errorElemenet)) {
 
       closeErrorBlock();
     }
   } else if (sendDataSucessShown) {
-
     const successElemenet = document.querySelector('.success__inner');
 
     if (!evt.composedPath().includes(successElemenet)) {
@@ -133,7 +126,6 @@ const onMouseClick = (evt) => {
 
 
 const onDocumentKeydown = (evt) => {
-
   if (!isEscapeEvent(evt)) {
     return;
   }
@@ -171,7 +163,6 @@ const changeTryAgainButtonAccessibility = (newValue) => {
 };
 
 const onTryAgainButtonClick = () => {
-
   changeTryAgainButtonAccessibility(true);
   saveNewPost();
 };
@@ -182,8 +173,8 @@ const onOkButtonClick = () => {
 };
 
 const showConnectionError = () => {
-
   if (connectionErrorShown) {
+
     changeTryAgainButtonAccessibility(false);
     return;
   }
@@ -254,7 +245,6 @@ const openImageEditor = () => {
   document.addEventListener('keydown', onDocumentKeydown);
 
   setDefaultScale();
-  // setDefaultEffect();
   increaseScaleElement.addEventListener('click', onIncreaseScaleClick);
   decreaseScaleElement.addEventListener('click', onDecreaseScaleClick);
   effectsElement.addEventListener('change', onEffectChange);

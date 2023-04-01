@@ -24,9 +24,7 @@ const createCommentElement = ({avatar, message, name}) => {
   return commentItem;
 };
 
-const renderModalComments = (comments) => {
-  comentsList.append(...comments.map(createCommentElement));
-};
+const renderModalComments = (comments) => comentsList.append(...comments.map(createCommentElement));
 
 const makeSequence = (step) => {
   let index = 0;
@@ -45,6 +43,7 @@ const renderMoreComments = (commentsLoaderElement, stepSequence, comments) => {
   renderModalComments(comments.slice(prev, index));
   commentsView.textContent = prev + comments.slice(prev,index).length;
   if (comments.length <= index) {
+
     commentsLoaderElement.classList.add('hidden');
   }
 };
@@ -91,12 +90,14 @@ const hideBigPicture = () => {
 
 const onCloseButtonDown = (evt) => {
   if(isEscapeEvent(evt)) {
+
     hideBigPicture();
   }
 };
 
 const onCloseButtonClick = (evt) => {
   if (isMouseLeftButtonEvent(evt)) {
+
     hideBigPicture();
   }
 };
