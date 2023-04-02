@@ -1,13 +1,15 @@
-const sendRequest = (url, onSuccess, onError, options) => {
-  if (!options) {
-    options = {
-      method: 'GET',
-      credentials: 'same-origin'
-    };
-  }
+const SEND_DATA_URL = 'https://28.javascript.pages.academy/kekstagram';
+const SOURCE_DATA_URL = 'https://28.javascript.pages.academy/kekstagram/data';
+
+const Method = {
+  GET: 'GET',
+  POST: 'POST',
+};
+
+const sendRequest = (url, onSuccess, onError, method = Method.GET, body = null) => {
   fetch(
     url,
-    options
+    {method, body}
   ).then((response) => {
     if (response.ok) {
       return response.json();
@@ -20,4 +22,8 @@ const sendRequest = (url, onSuccess, onError, options) => {
   });
 };
 
-export {sendRequest};
+const loadPosts = (onSuccess, onError) => sendRequest(SOURCE_DATA_URL, onSuccess, onError,);
+
+const sendNewPost = (body, onSuccess, onError) => sendRequest(SEND_DATA_URL, onSuccess, onError, Method.POST, body);
+
+export {loadPosts, sendNewPost};
