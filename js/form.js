@@ -160,11 +160,11 @@ const openImageEditor = () => {
 
 const saveNewPost = (evt) => sendNewPost(new FormData(evt.target), showSuccessMessage, showConnectionError);
 
-const onFormSubmit = (evt) => {
+function onFormSubmit(evt) {
   evt.preventDefault();
   blockSubmitButton();
   sendNewPost(new FormData(evt.target), showSuccessMessage, showConnectionError);
-};
+}
 
 inputHashtag.addEventListener('input', onHashtagInput);
 pristine.addValidator(inputHashtag, hashtagsHandler, getError, 2, false);
