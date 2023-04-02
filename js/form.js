@@ -4,7 +4,6 @@ import {onEffectChange, setDefaultEffect} from './effects.js';
 import {sendNewPost} from './requests.js';
 import {showConnectionError, showSuccessMessage} from './message.js';
 
-// const SEND_DATA_URL = 'https://28.javascript.pages.academy/kekstagram';
 const MAX_SYMBOLS = 20;
 const MAX_HASHTAGS = 5;
 
@@ -47,7 +46,7 @@ const rules = [
     error: 'Хэш-теги не должны повторяться',//проверка на уникальность тэгов
   },
   {
-    check: (inputArray) => inputArray.some((item) => item.length > MAX_SYMBOLS),//проверка на максимальное колличество символов
+    check: (inputArray) => inputArray.some((item) => item.length > MAX_SYMBOLS),
     error: `Максимальная длина одного хэш-тэга ${MAX_SYMBOLS} символов, включая решётку;`,
   },
   {
@@ -55,7 +54,7 @@ const rules = [
     error: `Нельзя указывать больше ${MAX_HASHTAGS} хэш-тэгов`,
   },
   {
-    check: (inputArray) => inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),//проверка на допустимые символы
+    check: (inputArray) => inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),
     error: 'Хэш-тэг содержит недопустимые символы',
   },
 ];
@@ -68,7 +67,14 @@ const getError = () => errorMessage;
 
 const hashtagsHandler = (value) => {
   errorMessage = '';
-  const inputArray = value.toLowerCase().trim().split(/\s+/);
+  //Паша, я вернула эту строку, т.к без текущей проверки, если текст в инпуте для хэш-тегов стереть, остается ошибка.
+  const inputText = value.toLowerCase().trim();
+
+  if(!inputText) {
+    return true;
+  }
+
+  const inputArray = inputText.split(/\s+/);
 
   if (inputArray.length === 0) {
     return true;
@@ -107,6 +113,16 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
+};
+
 function closeImageEditor () {
 
   imageEditorDialog.classList.add('hidden');
@@ -123,12 +139,12 @@ function closeImageEditor () {
 
   setDefaultScale();
   setDefaultEffect();
-  submitButton.disabled = false;
+  unblockSubmitButton();
 
   form.reset();
 }
 
-const openImageEditor = () => {//открытие формы
+const openImageEditor = () => {
 
   imageEditorDialog.classList.remove('hidden');
   pageBody.classList.add('modal-open');
@@ -139,17 +155,7 @@ const openImageEditor = () => {//открытие формы
   increaseScaleElement.addEventListener('click', onIncreaseScaleClick);
   decreaseScaleElement.addEventListener('click', onDecreaseScaleClick);
   effectsElement.addEventListener('change', onEffectChange);
-  form.addEventListener('submit', onFormSubmit);//вопросик имеет ли это место быть теперь?
-};
-
-const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = SubmitButtonText.SENDING;
-};
-
-const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = SubmitButtonText.IDLE;
+  form.addEventListener('submit', onFormSubmit);
 };
 
 const saveNewPost = (evt) => sendNewPost(new FormData(evt.target), showSuccessMessage, showConnectionError);
@@ -158,7 +164,6 @@ const onFormSubmit = (evt) => {
   evt.preventDefault();
   blockSubmitButton();
   sendNewPost(new FormData(evt.target), showSuccessMessage, showConnectionError);
-  unblockSubmitButton();
 };
 
 inputHashtag.addEventListener('input', onHashtagInput);
