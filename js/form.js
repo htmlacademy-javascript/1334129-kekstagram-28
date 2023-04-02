@@ -1,9 +1,16 @@
 import {isEscapeEvent} from './util.js';
 import {onIncreaseScaleClick, onDecreaseScaleClick, setDefaultScale} from './scale.js';
-import {onEffectChange} from './effects.js';
+import {onEffectChange, setDefaultEffect} from './effects.js';
+import {sendNewPost} from './requests.js';
+import {showConnectionError, showSuccessMessage} from './message.js';
 
 const MAX_SYMBOLS = 20;
 const MAX_HASHTAGS = 5;
+
+const SubmitButtonText = {
+  IDLE: 'Опубликовать',
+  SENDING: 'Опубликовываю...'
+};
 
 const pageBody = document.querySelector('body');
 const form = document.querySelector('.img-upload__form');
@@ -39,7 +46,7 @@ const rules = [
     error: 'Хэш-теги не должны повторяться',//проверка на уникальность тэгов
   },
   {
-    check: (inputArray) => inputArray.some((item) => item.length > MAX_SYMBOLS),//проверка на максимальное колличество символов
+    check: (inputArray) => inputArray.some((item) => item.length > MAX_SYMBOLS),
     error: `Максимальная длина одного хэш-тэга ${MAX_SYMBOLS} символов, включая решётку;`,
   },
   {
@@ -47,7 +54,7 @@ const rules = [
     error: `Нельзя указывать больше ${MAX_HASHTAGS} хэш-тэгов`,
   },
   {
-    check: (inputArray) => inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),//проверка на допустимые символы
+    check: (inputArray) => inputArray.some((item) => !/^#[a-zа-яё0-9]{1,19}$/i.test(item)),
     error: 'Хэш-тэг содержит недопустимые символы',
   },
 ];
@@ -59,17 +66,21 @@ let errorMessage = '';
 const getError = () => errorMessage;
 
 const hashtagsHandler = (value) => {
-
   errorMessage = '';
+  //Паша, я вернула эту строку, т.к без текущей проверки, если текст в инпуте для хэш-тегов стереть, остается ошибка.
+  const inputText = value.toLowerCase().trim();
 
-  const inputArray = value.toLowerCase().trim().split(/\s+/);
+  if(!inputText) {
+    return true;
+  }
+
+  const inputArray = inputText.split(/\s+/);
 
   if (inputArray.length === 0) {
     return true;
   }
 
   return rules.every((rule) => {
-
     const isInvalid = rule.check(inputArray);
 
     if (isInvalid) {
@@ -82,7 +93,6 @@ const hashtagsHandler = (value) => {
 };
 
 const onHashtagInput = () => {
-
   if (pristine.validate()) {
 
     submitButton.classList.remove('img-upload__submit--disabled');
@@ -94,21 +104,23 @@ const onHashtagInput = () => {
   }
 };
 
-const onFormSubmit = (evt) => {
-
-  evt.preventDefault();
-
-  closeImageEditor();
-};
-
 const isTextFieldInFocus = () => document.activeElement === hashTags || document.activeElement === comment;
 
 const onDocumentKeydown = (evt) => {
 
   if (isEscapeEvent(evt) && !isTextFieldInFocus()) {
-
     closeImageEditor();
   }
+};
+
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = SubmitButtonText.SENDING;
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = SubmitButtonText.IDLE;
 };
 
 function closeImageEditor () {
@@ -118,11 +130,16 @@ function closeImageEditor () {
 
   closeButton.removeEventListener('click', closeImageEditor);
   document.removeEventListener('keydown', onDocumentKeydown);
+
   form.removeEventListener('submit', onFormSubmit);
 
   increaseScaleElement.removeEventListener('click', onIncreaseScaleClick);
   decreaseScaleElement.removeEventListener('click', onDecreaseScaleClick);
   effectsElement.removeEventListener('change', onEffectChange);
+
+  setDefaultScale();
+  setDefaultEffect();
+  unblockSubmitButton();
 
   form.reset();
 }
@@ -138,10 +155,19 @@ const openImageEditor = () => {
   increaseScaleElement.addEventListener('click', onIncreaseScaleClick);
   decreaseScaleElement.addEventListener('click', onDecreaseScaleClick);
   effectsElement.addEventListener('change', onEffectChange);
-
   form.addEventListener('submit', onFormSubmit);
 };
+
+const saveNewPost = (evt) => sendNewPost(new FormData(evt.target), showSuccessMessage, showConnectionError);
+
+function onFormSubmit(evt) {
+  evt.preventDefault();
+  blockSubmitButton();
+  sendNewPost(new FormData(evt.target), showSuccessMessage, showConnectionError);
+}
 
 inputHashtag.addEventListener('input', onHashtagInput);
 pristine.addValidator(inputHashtag, hashtagsHandler, getError, 2, false);
 uploadFile.addEventListener('change', openImageEditor);
+
+export {saveNewPost, closeImageEditor};

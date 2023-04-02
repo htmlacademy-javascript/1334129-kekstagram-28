@@ -40,7 +40,7 @@ const EFFECTS_OPTIONS = {
     },
     start: 100,
     step: 1,
-    unit: '',
+    unit: '%',
     connect: 'lower'
   },
   phobos: {
@@ -102,7 +102,12 @@ const onEffectChange = (evt) => {
   sliderElement.noUiSlider.updateOptions(choosenOption);
 };
 
+const setDefaultEffect = () => {
+  choosenOption = EFFECTS_OPTIONS.none;
+  sliderElement.noUiSlider.updateOptions(choosenOption);
+};
+
 noUiSlider.create(sliderElement, choosenOption);
 sliderElement.noUiSlider.on('update', OnSliderUpdate);
 
-export {onEffectChange};
+export {onEffectChange, setDefaultEffect};
