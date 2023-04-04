@@ -25,7 +25,6 @@ const onMouseClick = (evt) => {
       closeSuccessBlock();
       closeImageEditor();
     }
-    return;
   }
 };
 
@@ -36,13 +35,11 @@ const onDocumentKeydown = (evt) => {
 
   if (connectionErrorShown) {
     closeErrorBlock();
-    return;
   }
 
   if (sendDataSucessShown) {
     closeSuccessBlock();
     closeImageEditor();
-    return;
   }
 };
 
@@ -81,7 +78,6 @@ const onOkButtonClick = () => {
 
 const showConnectionError = () => {
   if (connectionErrorShown) {
-
     changeTryAgainButtonAccessibility(false);
     return;
   }
