@@ -1,4 +1,6 @@
 import {onPictureClick} from './big-picture.js';
+import {setFilterClick, filterPosts} from './filters.js';
+import { debounce } from './util.js';
 
 const container = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -25,9 +27,16 @@ const createThumbnail = (photo) => {
 };
 
 const renderThumbnails = (thumbnails) => {
+  const currentThumbnails = document.querySelectorAll('.picture');
+
+  currentThumbnails.forEach((thumbnail) => {
+    container.removeChild(thumbnail);
+  });
+
+  const filteredThumbnails = filterPosts(thumbnails);
   const thumbnailFragment = document.createDocumentFragment();
 
-  thumbnails.forEach((thumbnail) => {
+  filteredThumbnails.forEach((thumbnail) => {
     const pictureElement = createThumbnail(thumbnail);
 
     thumbnailFragment.appendChild(pictureElement);
@@ -36,4 +45,9 @@ const renderThumbnails = (thumbnails) => {
   container.appendChild(thumbnailFragment);
 };
 
-export {renderThumbnails};
+const showThumbnails = (thumbnails) => {
+  renderThumbnails(thumbnails);
+  setFilterClick(debounce(() => renderThumbnails(thumbnails)));
+};
+
+export {showThumbnails};
