@@ -3,5 +3,4 @@ import './form.js';
 import {loadPosts} from './requests.js';
 import { showConnectionErrorMessage} from './message.js';
 
-
 loadPosts(showThumbnails, showConnectionErrorMessage);

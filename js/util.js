@@ -13,7 +13,6 @@ const isMouseLeftButtonEvent = (evt) => evt.button === MOUSE_LEFT_BUTTON;
 const isEscapeEvent = (evt) => evt.code === Keys.ESC;
 
 const debounce = (callback, timeoutDelay = 500) => {
-
   let timeoutId;
 
   return (...rest) => {
@@ -22,23 +21,9 @@ const debounce = (callback, timeoutDelay = 500) => {
   };
 };
 
-const throttle = (callback, delayBetweenFrames) => {
-  let lastTime = 0;
-
-  return (...rest) => {
-    const now = new Date();
-
-    if (now - lastTime >= delayBetweenFrames) {
-      callback.apply(this, rest);
-      lastTime = now;
-    }
-  };
-};
-
 export {
   isEnterEvent,
   isMouseLeftButtonEvent,
   isEscapeEvent,
-  debounce,
-  throttle
+  debounce
 };

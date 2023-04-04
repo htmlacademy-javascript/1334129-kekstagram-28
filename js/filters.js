@@ -12,9 +12,9 @@ const activeButtonStyle = 'img-filters__button--active';
 
 let currentFiler = Filters.DEFAULT;
 
-filtersContainer.classList.remove('img-filters--inactive');
+const setFilterClick = (callback) => {
+  filtersContainer.classList.remove('img-filters--inactive');
 
-const setFilterClick = (cb) => {
   filtersFormElement.addEventListener('click', (evt) => {
     const newFilter = evt.target.id;
     if (!newFilter || newFilter === currentFiler) {
@@ -24,9 +24,10 @@ const setFilterClick = (cb) => {
     activeButtonElement.classList.remove(activeButtonStyle);
     evt.target.classList.add(activeButtonStyle);
     currentFiler = newFilter;
-    cb();
+    callback();
   });
 };
+
 const randomSorting = () => Math.random() - 0.5;
 const sortByDiscussed = (a, b) => b.comments.length - a.comments.length;
 

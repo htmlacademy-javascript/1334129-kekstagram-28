@@ -28,29 +28,26 @@ const renderModalComments = (comments) => comentsList.append(...comments.map(cre
 
 const makeSequence = (step) => {
   let index = 0;
+
   return () => {
     const prev = index;
-
     index += step;
-
     return [prev, index];
   };
 };
 
 const renderMoreComments = (commentsLoaderElement, stepSequence, comments) => {
   const [prev, index] = stepSequence();
-
   renderModalComments(comments.slice(prev, index));
   commentsView.textContent = prev + comments.slice(prev,index).length;
-  if (comments.length <= index) {
 
+  if (comments.length <= index) {
     commentsLoaderElement.classList.add('hidden');
   }
 };
 
 const makeCommentsLoaderElement = () => {
   const commentsLoaderElement = bigPicture.querySelector('.comments-loader');
-
   const newCommentsLoaderElement = commentsLoaderElement.cloneNode(true);
   newCommentsLoaderElement.classList.remove('hidden');
   commentsLoaderElement.replaceWith(newCommentsLoaderElement);
@@ -90,14 +87,12 @@ const hideBigPicture = () => {
 
 const onCloseButtonDown = (evt) => {
   if(isEscapeEvent(evt)) {
-
     hideBigPicture();
   }
 };
 
 const onCloseButtonClick = (evt) => {
   if (isMouseLeftButtonEvent(evt)) {
-
     hideBigPicture();
   }
 };

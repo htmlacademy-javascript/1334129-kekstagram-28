@@ -67,15 +67,12 @@ const getError = () => errorMessage;
 
 const hashtagsHandler = (value) => {
   errorMessage = '';
-  //Паша, я вернула эту строку, т.к без текущей проверки, если текст в инпуте для хэш-тегов стереть, остается ошибка.
   const inputText = value.toLowerCase().trim();
-
   if(!inputText) {
     return true;
   }
 
   const inputArray = inputText.split(/\s+/);
-
   if (inputArray.length === 0) {
     return true;
   }
@@ -94,11 +91,9 @@ const hashtagsHandler = (value) => {
 
 const onHashtagInput = () => {
   if (pristine.validate()) {
-
     submitButton.classList.remove('img-upload__submit--disabled');
     submitButton.disabled = false;
   } else {
-
     submitButton.classList.add('img-upload__submit--disabled');
     submitButton.disabled = true;
   }
@@ -124,34 +119,30 @@ const unblockSubmitButton = () => {
 };
 
 function closeImageEditor () {
-
   imageEditorDialog.classList.add('hidden');
   pageBody.classList.remove('modal-open');
-
-  closeButton.removeEventListener('click', closeImageEditor);
-  document.removeEventListener('keydown', onDocumentKeydown);
-
-  form.removeEventListener('submit', onFormSubmit);
-
-  increaseScaleElement.removeEventListener('click', onIncreaseScaleClick);
-  decreaseScaleElement.removeEventListener('click', onDecreaseScaleClick);
-  effectsElement.removeEventListener('change', onEffectChange);
 
   setDefaultScale();
   setDefaultEffect();
   unblockSubmitButton();
-
   form.reset();
+
+  closeButton.removeEventListener('click', closeImageEditor);
+  document.removeEventListener('keydown', onDocumentKeydown);
+  form.removeEventListener('submit', onFormSubmit);
+  increaseScaleElement.removeEventListener('click', onIncreaseScaleClick);
+  decreaseScaleElement.removeEventListener('click', onDecreaseScaleClick);
+  effectsElement.removeEventListener('change', onEffectChange);
 }
 
 const openImageEditor = () => {
-
   imageEditorDialog.classList.remove('hidden');
   pageBody.classList.add('modal-open');
-  closeButton.addEventListener('click', closeImageEditor);
-  document.addEventListener('keydown', onDocumentKeydown);
 
   setDefaultScale();
+
+  closeButton.addEventListener('click', closeImageEditor);
+  document.addEventListener('keydown', onDocumentKeydown);
   increaseScaleElement.addEventListener('click', onIncreaseScaleClick);
   decreaseScaleElement.addEventListener('click', onDecreaseScaleClick);
   effectsElement.addEventListener('change', onEffectChange);
