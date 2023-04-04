@@ -137,7 +137,6 @@ function closeImageEditor () {
 }
 
 const openImageEditor = () => {
-
   imageEditorDialog.classList.remove('hidden');
   pageBody.classList.add('modal-open');
   setDefaultScale();

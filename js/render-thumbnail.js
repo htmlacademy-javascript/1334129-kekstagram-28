@@ -6,7 +6,6 @@ const container = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
 const createThumbnail = (photo) => {
-
   const {url, likes, comments, description, id} = photo;
   const thumbnail = thumbnailTemplate.cloneNode(true);
 

@@ -3,12 +3,13 @@ import {saveNewPost, closeImageEditor} from './form.js';
 
 const ERROR_SHOW_TIME = 5000;
 
-let connectionErrorShown = false;
-let sendDataSucessShown = false;
 const pageBody = document.querySelector('body');
 const errorTemplate = document.querySelector('#error').content.querySelector('.error');
 const errorMessage = document.querySelector('#error-message').content.querySelector('.error');
 const sucсessTemplate = document.querySelector('#success').content.querySelector('.success');
+
+let connectionErrorShown = false;
+let sendDataSucessShown = false;
 
 const onMouseClick = (evt) => {
   if (connectionErrorShown) {
