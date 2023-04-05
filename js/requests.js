@@ -1,5 +1,6 @@
-const SEND_DATA_URL = 'https://28.javascript.pages.academy/kekstagram';
-const SOURCE_DATA_URL = 'https://28.javascript.pages.academy/kekstagram/data';
+const BASE_URL = 'https://28.javascript.pages.academy/kekstagram';
+const SEND_DATA_URL = `${BASE_URL}`;
+const SOURCE_DATA_URL = `${BASE_URL}/data`;
 
 const Method = {
   GET: 'GET',

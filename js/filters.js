@@ -28,7 +28,7 @@ const setFilterClick = (callback) => {
   });
 };
 
-const randomSorting = () => Math.random() - 0.5;
+const makeRandomSorting = () => Math.random() - 0.5;
 const sortByDiscussed = (a, b) => b.comments.length - a.comments.length;
 
 const filterPosts = (posts) => {
@@ -36,7 +36,7 @@ const filterPosts = (posts) => {
     case Filters.DEFAULT:
       return posts;
     case Filters.RANDOM:
-      return posts.slice(0).sort(randomSorting).slice(0, MAX_RANDOM_IMAGES);
+      return posts.slice(0).sort(makeRandomSorting).slice(0, MAX_RANDOM_IMAGES);
     case Filters.DISCUSSED:
       return posts.slice(0).sort(sortByDiscussed);
   }

@@ -1,6 +1,6 @@
 import {isEscapeEvent} from './util.js';
 import {onIncreaseScaleClick, onDecreaseScaleClick, setDefaultScale} from './scale.js';
-import {onEffectChange, setDefaultEffect} from './effects.js';
+import {onEffectChange, setDefaultEffect, hideSlider} from './effects.js';
 import {sendNewPost} from './requests.js';
 import {showConnectionError, showSuccessMessage} from './message.js';
 import {onFileUploadChange} from './photo-upload.js';
@@ -137,11 +137,11 @@ function closeImageEditor () {
 }
 
 const openImageEditor = () => {
-
   imageEditorDialog.classList.remove('hidden');
   pageBody.classList.add('modal-open');
   setDefaultScale();
   onFileUploadChange();
+  hideSlider();
 
   closeButton.addEventListener('click', closeImageEditor);
   document.addEventListener('keydown', onDocumentKeydown);
