@@ -110,4 +110,4 @@ const setDefaultEffect = () => {
 noUiSlider.create(sliderElement, choosenOption);
 sliderElement.noUiSlider.on('update', OnSliderUpdate);
 
-export {onEffectChange, setDefaultEffect};
+export {onEffectChange, setDefaultEffect, hideSlider};
